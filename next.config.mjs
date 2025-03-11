@@ -11,6 +11,7 @@ export default withNextra({
     },
     output: "export",
     basePath: "/geovis-portfolio",
+    reactStrictMode: true,
   })
 
 // If you have other Next.js configurations, you can pass them as the parameter:
