@@ -10,7 +10,7 @@ export default withNextra({
       unoptimized: true,
     },
     output: "export",
-    basePath: "/geovis-portfolio",
+    // basePath: "/geovis-portfolio",
     reactStrictMode: true,
   })
 
