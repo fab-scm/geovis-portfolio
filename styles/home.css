@@ -1,0 +1,5 @@
+/* Example of overriding Nextra's content container */
+.nextra .container {
+  max-width: 1200px; /* Or any width you prefer */
+  width: 100%;
+}
