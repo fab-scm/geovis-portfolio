@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[185],{2744:(_,e,t)=>{(window.__NEXT_P=window.__NEXT_P||[]).push(["/portfolio/theory/_meta",function(){return t(8924)}])},8924:(_,e,t)=>{"use strict";t.r(e),t.d(e,{__N_SSG:()=>u,default:()=>n});var u=!0;let n=()=>null}},_=>{var e=e=>_(_.s=e);_.O(0,[636,593,792],()=>e(2744)),_N_E=_.O()}]);
