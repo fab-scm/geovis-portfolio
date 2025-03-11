@@ -11,6 +11,7 @@ export default {
     unoptimized: true,
   },
   output: "export",
+  basePath: "/geovis-portfolio",
 };
 
 // If you have other Next.js configurations, you can pass them as the parameter:
