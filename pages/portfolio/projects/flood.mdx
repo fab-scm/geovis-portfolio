@@ -1,10 +1,11 @@
+import Script from 'next/script';
+
 # Flood Project (Trier, RLP)
 
 ## Introduction and Overview
-Here you shoul insert the static overview map for the flood project and the interactive web map with normal water level (Week 7).
 ![Moselle by Trier](/portfolio/projects/flood/Moselle-by-Trier.png)
 
 ## 
 
-<script type="module" src="https://js.arcgis.com/embeddable-components/4.32/arcgis-embeddable-components.esm.js"></script>
+<Script type="module" src="https://js.arcgis.com/embeddable-components/4.32/arcgis-embeddable-components.esm.js" strategy="beforeInteractive"></Script>
 <arcgis-embedded-map style={{height:600 + 'px'}} item-id="c3199b9d42e74da8b1eca5acd2b56277" theme="light" heading-enabled legend-enabled information-enabled share-enabled portal-url="https://zimk-uni-trier.maps.arcgis.com" ></arcgis-embedded-map>
