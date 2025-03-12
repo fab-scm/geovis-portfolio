@@ -1,16 +1,28 @@
+import { HomeIcon, BookOpenIcon } from "@heroicons/react/24/outline";
+
 export default {
   index: {
-    title: 'Home',
+    title: (
+      <div className="flex items-center mr-2">
+        <HomeIcon className="h-5 w-5 mr-1" />
+        <span className="text-base">Home</span>
+      </div>
+    ),
     type: 'page',
     theme: {
       layout: 'raw'
     }
   },
   portfolio: {
-    title: 'Portfolio',
+    title: (
+      <div className="flex items-center mr-2">
+        <BookOpenIcon className="h-5 w-5 mr-1" />
+        <span className="text-base">Portfolio</span>
+      </div>
+    ),
     type: 'page',
     theme: {
-      toc: false
+      toc: true
     }
   }
 }

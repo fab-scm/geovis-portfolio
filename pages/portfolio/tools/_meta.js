@@ -1,6 +1,6 @@
 export default {
   qgis: 'QGIS',
-  arcgis: 'ArcGIS',
+  arcgis: 'ArcGIS Pro',
   comparison: 'Comparison',
   examples: 'Examples'
 }

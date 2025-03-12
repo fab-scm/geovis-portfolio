@@ -20,9 +20,9 @@ export default function IndexPage() {
         </p>
         <p className="subtitle">
           <Link className={styles.cta} href="/portfolio/introduction">
-            <span>Get started</span>
-            <span>
-              <ArrowRightIcon className="h-3 w-3 ml-2" />
+            <span>Portfolio</span>
+            <span className="flex items-center">
+              <ArrowRightIcon className="h-4 w-4 ml-2" />
             </span>
           </Link>
         </p>
@@ -35,13 +35,17 @@ export default function IndexPage() {
                 <div className="w-full h-full">
                   <Image
                     src="/geovis-portfolio/satellite-imagery.jpg"
-                    alt="Satellite image"
-                    className="static object-cover w-full h-full rounded-3xl"
+                    alt="USGS Satellite Imagery"
+                    className="relative object-cover w-full h-full rounded-3xl"
                     // fill={true}
                     priority={true}
                     width={7292}
                     height={7292}
                   />
+
+                  <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded">
+                    | Photo by <Link href="https://unsplash.com/@usgs"><span className="hover:text-white/70 underline underline-offset-2">USGS</span></Link> on <Link href="https://unsplash.com/"><span className="hover:text-white/70 underline underline-offset-2">Unsplash</span></Link>
+                  </div>
                 </div>
               </div>
             </div>
