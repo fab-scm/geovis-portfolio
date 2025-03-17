@@ -39,3 +39,13 @@ code.text-\[\.9em\] {
     display: none;
   }
 }
+
+img-comparison-slider {
+  --divider-width: 2px;
+  --divider-color: black;
+  --default-handle-color: black;
+  --default-handle-width: 60px;
+  --default-handle-opacity: 0.5;
+  --divider-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5)
+  --default-handle-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+}

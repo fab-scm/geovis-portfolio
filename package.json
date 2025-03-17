@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@img-comparison-slider/react": "^8.0.2",
     "@tailwindcss/postcss": "^4.0.12",
     "next": "^15.0.2",
     "nextra": "^3.2.0",

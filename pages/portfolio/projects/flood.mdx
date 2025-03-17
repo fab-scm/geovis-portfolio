@@ -1,46 +1,57 @@
-import Script from 'next/script';
+import Script from "next/script";
 
 # Flood Project (Trier, RLP)
 
 ## Introduction and Overview
+
 ### Static Overview Map
+
 ![Moselle by Trier](/portfolio/projects/flood/Moselle-by-Trier.png)
 
 ### Dynamic Overview Web Map
-<Script type="module" src="https://js.arcgis.com/embeddable-components/4.32/arcgis-embeddable-components.esm.js" strategy="beforeInteractive"></Script>
+
+<Script
+  type="module"
+  src="https://js.arcgis.com/embeddable-components/4.32/arcgis-embeddable-components.esm.js"
+  strategy="beforeInteractive"
+></Script>
+
 <arcgis-embedded-map style={{height:600 + 'px'}} item-id="c3199b9d42e74da8b1eca5acd2b56277" theme="light" legend-enabled information-enabled share-enabled portal-url="https://zimk-uni-trier.maps.arcgis.com" ></arcgis-embedded-map>
 
-
 ## Flood Risk map
+
 ### Static Risk Map
+
 ![Moselle Flood Levels](/portfolio/projects/flood/Moselle-Flood-Levels.png)
 
 ### Dynamic Risk Web Map
-<Script type="module" src="https://js.arcgis.com/embeddable-components/4.32/arcgis-embeddable-components.esm.js" strategy='beforeInteractive'></Script>
+
+<Script
+  type="module"
+  src="https://js.arcgis.com/embeddable-components/4.32/arcgis-embeddable-components.esm.js"
+  strategy="beforeInteractive"
+></Script>
+
 <arcgis-embedded-map style={{height:600 + 'px'}} item-id="d7efd99e536f42278feefd376941bca6" theme="light" legend-enabled information-enabled share-enabled portal-url="https://zimk-uni-trier.maps.arcgis.com" zoom-level={12}></arcgis-embedded-map>
 
 ## Flood Animation
 
 ### 2D Animation
+
 <video width="100%" height="240" controls preload="metadata" loop>
-  <source src="/geovis-portfolio/portfolio/projects/flood/2D-flood-animation.mp4" type="video/mp4" />
-  {/* <track
-    src="/path/to/captions.vtt"
-    kind="subtitles"
-    srcLang="en"
-    label="English"
-  /> */}
+  <source
+    src="/geovis-portfolio/portfolio/projects/flood/2D-flood-animation.mp4"
+    type="video/mp4"
+  />
   Your browser does not support the video tag.
 </video>
 
 ### 3D Animation
+
 <video width="100%" height="240" controls preload="metadata" loop>
-  <source src="/geovis-portfolio/portfolio/projects/flood/3D-flood-animation.mp4" type="video/mp4" />
-  {/* <track
-    src="/path/to/captions.vtt"
-    kind="subtitles"
-    srcLang="en"
-    label="English"
-  /> */}
+  <source
+    src="/geovis-portfolio/portfolio/projects/flood/3D-flood-animation.mp4"
+    type="video/mp4"
+  />
   Your browser does not support the video tag.
 </video>
