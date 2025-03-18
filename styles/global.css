@@ -40,6 +40,8 @@ code.text-\[\.9em\] {
   }
 }
 
+@import "react-image-gallery/styles/css/image-gallery.css";
+
 img-comparison-slider {
   --divider-width: 2px;
   --divider-color: black;

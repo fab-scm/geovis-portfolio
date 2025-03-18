@@ -1,3 +1,28 @@
+import ImageGallery from "react-image-gallery";
+
+export const images = [
+  {
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_N.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_N.png",
+  },
+  {
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_S.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_S.png",
+  },
+  {
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem_mosaic.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_mosaic.png",
+  },
+  {
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem.png",
+  },
+  {
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem_filled.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_filled.png",
+  },
+];
+
 # RUSLE (Western Kenya)
 
 ## Introduction and Overview
@@ -21,12 +46,22 @@
 <iframe
   width="100%"
   height="600"
-  frameborder="0"
-  allowfullscreen
+  frameBorder="0"
+  allowFullScreen={true}
   src="https://arcg.is/0zj9LC0"
 ></iframe>
 
 ## RUSLE Model
+
+<ImageGallery
+  items={images}
+  showThumbnails={false}
+  showPlayButton={false}
+  showIndex={true}
+  showNav={true}
+  showBullets={true}
+  slideDuration={0}
+/>
 
 ### Calculate the LS Factor
 
