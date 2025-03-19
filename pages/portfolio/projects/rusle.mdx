@@ -1,25 +1,26 @@
 import ImageGallery from "react-image-gallery";
+import { ImgComparisonSlider } from "@img-comparison-slider/react";
 
 export const images = [
   {
-    original: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_N.png",
-    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_N.png",
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_tile_N.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_tile_N.png",
   },
   {
-    original: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_S.png",
-    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_tile_S.png",
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_tile_S.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_tile_S.png",
   },
   {
-    original: "/geovis-portfolio/portfolio/projects/rusle/dem_mosaic.png",
-    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_mosaic.png",
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_mosaic.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_mosaic.png",
   },
   {
-    original: "/geovis-portfolio/portfolio/projects/rusle/dem.png",
-    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem.png",
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem/dem.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem/dem.png",
   },
   {
-    original: "/geovis-portfolio/portfolio/projects/rusle/dem_filled.png",
-    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem_filled.png",
+    original: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_filled.png",
+    thumbnail: "/geovis-portfolio/portfolio/projects/rusle/dem/dem_filled.png",
   },
 ];
 
@@ -65,8 +66,59 @@ export const images = [
 
 ### Calculate the LS Factor
 
+![Flow Direction](/portfolio/projects/rusle/ls_fac/ls_flow.png)
+
+![Flow Accumulation](/portfolio/projects/rusle/ls_fac/ls_uparea.png)
+
+![Slope](/portfolio/projects/rusle/ls_fac/ls_slope.png)
+
+![LS-Factor](/portfolio/projects/rusle/ls_fac/ls_fac.png)
+
+![LS-Factor Composite](/portfolio/projects/rusle/ls_fac/ls_composite.png)
+
 ### Calculate the C Factor
+
+![Mean NDVI for C-Factor](/portfolio/projects/rusle/c_fac/c_ndvi.png)
+
+![C-Factor](/portfolio/projects/rusle/c_fac/c_fac.png)
 
 ### Calculate the K Factor
 
+![Soil Stack](/portfolio/projects/rusle/k_fac/k_soil_stack.png)
+
+<ImgComparisonSlider className="bg-black">
+  <img
+    slot="first"
+    src="/geovis-portfolio/portfolio/projects/rusle/k_fac/k_fac_sand.png"
+  />
+  <img
+    slot="second"
+    src="/geovis-portfolio/portfolio/projects/rusle/k_fac/k_fac_vfs.png"
+  />
+</ImgComparisonSlider>
+
 ### Calculate the R Factor
+
+<ImgComparisonSlider className="bg-black">
+  <img
+    slot="first"
+    src="/geovis-portfolio/portfolio/projects/rusle/r_fac/r_fac_intervals.png"
+  />
+  <img
+    slot="second"
+    src="/geovis-portfolio/portfolio/projects/rusle/r_fac/r_fac_stretch.png"
+  />
+</ImgComparisonSlider>
+
+### RUSLE Result
+
+<ImgComparisonSlider className="bg-black">
+  <img
+    slot="first"
+    src="/geovis-portfolio/portfolio/projects/rusle/rusle_intervals.png"
+  />
+  <img
+    slot="second"
+    src="/geovis-portfolio/portfolio/projects/rusle/rusle_stretch.png"
+  />
+</ImgComparisonSlider>
