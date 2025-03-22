@@ -7,6 +7,19 @@ const nextConfig = {
     unoptimized: true,
   },
   basePath: "/geovis-portfolio",
+  // async headers() {
+  //   return [
+  //     {
+  //       source: "/geovis-portfolio/favicon.ico",
+  //       headers: [
+  //         {
+  //           key: "Content-Type",
+  //           value: "image/x-icon",
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // },
 }
 
 const withNextra = nextra({

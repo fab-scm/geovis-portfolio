@@ -1,38 +1,256 @@
 import Image from "next/image";
 import { ImgComparisonSlider } from "@img-comparison-slider/react";
+import { Table, Steps } from "nextra/components";
 
 # Examples: Thematic Maps
 
+All examples were created with `QGIS` and are based on real-world data.
+Several plugins and tools were used to create these maps, including `QuickMapServices`, `Temporal Controller`, and `OSMDownloader`.
+
 ## Week 3
 
-### IKEA store accessibility by car
+### IKEA Store Accessibility Analysis
 
-In this example the accessibility of IKEA Germany stores by car is visualized.
+In this example the accessibility of IKEA Germany stores by car is visualized to analyze how far away the stores are from german motorways.
 The store data is based on the locations of IKEA Germany stores including information on the year of opening and size of the sales area.
 The road network data comes from the official ATKIS dataset of the German Federal Agency for Cartography and Geodesy (BKG).
 The accessibility is calculated as the distance from the store to the nearest motorway hub.
-The first map gives an overview where the IKEA stores are located in Germany.
-The second map visualizes the accessibility of for the IKEA store of Halle/Leipzig.
+The first map (Figure 1) gives an overview where the IKEA stores are located in Germany.
+The second map visualizes examplary the accessibility of for the IKEA store of Halle/Leipzig.
 
 ![IKEA Locations Germany](/portfolio/tools/Examples/w3/IKEA_locations.png)
+**Figure 1:** Overview of IKEA store locations in Germany.
+
+import { Tabs } from 'nextra/components'
+ 
+<Tabs items={['Hub Distances', 'Sales Area', 'IKEA Stores']}>
+  <Tabs.Tab>
+    **Table 1:** Basic statistics for the accessibility (air-line distance to closest mototway hub) of IKEA stores in Germany.
+    | Statistic                    | Value [m]   |
+    |------------------------------|-------------|
+    | **Minimum value**            | 195.45      |
+    | **Maximum value**            | 7091.62     |
+    | **Range**                    | 6896.17     |
+    | **Sum**                      | 71056.12    |
+    | **Mean value**               | 1315.85     |
+    | **Median value**             | 680.38      |
+    | **Standard deviation**       | 1554.84     |
+    | **First quartile (Q1)**      | 409.45      |
+    | **Third quartile (Q3)**      | 1448.13     |
+    | **Interquartile Range (IQR)**| 1038.68     |
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Table 2:** Basic statistics for the sales area of IKEA stores in Germany.
+    | Statistic                    | Value [m²]  |
+    |------------------------------|-------------|
+    | **Minimum value**            | 18,000      |
+    | **Maximum value**            | 43,000      |
+    | **Range**                    | 25,000      |
+    | **Sum**                      | 1,572,300   |
+    | **Mean value**               | 29,116.67   |
+    | **Median value**             | 28,600      |
+    | **Standard deviation**       | 6,211.66    |
+    | **First quartile (Q1)**      | 24,900      |
+    | **Third quartile (Q3)**      | 34,600      |
+    | **Interquartile Range (IQR)**| 9,700       |
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Table 3:** Complete IKEA Store Data.
+    | Location                         | Opening Year | Sales Area [m²] | Nearest Hub          | Hub Dist [m] |
+    | ---------------------------- | ---- | --------- | --------------------------- | --------- |
+    | Augsburg (Gersthofen)        | 2006 | 31000     | Augsburg-West               | 1060.97   |
+    | Berlin-Lichtenberg           | 2010 | 43000     | Prenzlauer Promenade        | 7091.62   |
+    | Berlin-Spandau               | 1979 | 36300     | Spandauer Damm              | 4538.71   |
+    | Berlin-Tempelhof (Berlin-Schöneberg) | 2003 | 37000     | Alboinstraße        | 442.03    |
+    | Berlin-Waltersdorf (Schönefeld) | 1993 | 25000     | Waltersdorf              | 195.45    |
+    | Bielefeld                    | 1996 | 29000     | Bielefeld-Senne             | 4532.53   |
+    | Braunschweig                 | 1993 | 27000     | Braunschweig-Hansestraße    | 428.6     |
+    | Brinkum (Stuhr)              | 1976 | 21700     | Bremen/Brinkum              | 450.84    |
+    | Bremerhaven                  | 2015 | 18000     | Bremerhaven-Wulsdorf        | 1573.12   |
+    | Chemnitz                     | 1994 | 20400     | Chemnitz-Süd                | 569.42    |
+    | Dortmund                     | 1999 | 29500     | Dortmund-Kley               | 281.4     |
+    | Dresden                      | 2001 | 27500     | Dresden-Neustadt            | 505.13    |
+    | Duisburg                     | 2005 | 31700     | Duisburg-Alt-Hamborn        | 683.26    |
+    | Düsseldorf                   | 1999 | 39000     | Düsseldorf-Holthausen       | 315.73    |
+    | Erfurt                       | 2005 | 28200     | Erfurt-Bindersleben         | 623.44    |
+    | Essen                        | 1993 | 22800     | Essen-Zentrum               | 1426.38   |
+    | Frankfurt                    | 2007 | 35000     | Frankfurt am Main-Nieder-Eschbach | 388.85    |
+    | Freiburg                     | 1981 | 26800     | Freiburg-Mitte              | 3682.18   |
+    | Großburgwedel                | 1976 | 24600     | Großburgwedel               | 257.43    |
+    | Halle/Leipzig (Leuna)        | 1994 | 23100     | Leipzig-West                | 332.69    |
+    | Hamburg-Altona               | 2014 | 18000     | Hamburg-Othmarschen         | 2933.11   |
+    | Hamburg-Moorfleet            | 2002 | 35600     | Hamburg-Moorfleet           | 392.12    |
+    | Hamburg-Schnelsen            | 1989 | 31200     | Hamburg-Schnelsen-Nord      | 436.98    |
+    | Hanau                        | 1997 | 22300     | Erlensee                    | 1097.07   |
+    | Hannover EXPO-Park           | 2006 | 36000     | Messegelände                | 1225.5    |
+    | Kaarst                       | 1979 | 25000     | Holzbüttgen                 | 997.38    |
+    | Kaiserslautern               | 2015 | 24000     | Kaiserslautern-West         | 736.79    |
+    | Kamen                        | 1978 | 29100     | Kamen-Zentrum               | 513.82    |
+    | Karlsruhe                    | 2020 | 25500     | Karlsruhe-Durlach           | 744.25    |
+    | Kassel                       | 1980 | 25300     | Kassel-Industriepark        | 792.29    |
+    | Kiel                         | 2002 | 29300     | Kiel-Mitte                  | 216.91    |
+    | Koblenz                      | 2006 | 29300     | Koblenz-Nord                | 1933.8    |
+    | Köln-Am Butzweilerhof        | 2009 | 42700     | Köln-Longerich              | 913.42    |
+    | Köln-Godorf                  | 1975 | 36900     | Rodenkirchen                | 340.11    |
+    | Ludwigsburg                  | 1998 | 32200     | Ludwigsburg-Nord            | 278.38    |
+    | Lübeck                       | 2014 | 25500     | Lübeck-Dänischburg          | 333.84    |
+    | Magdeburg                    | 2017 | 18000     | Magdeburg-Zentrum           | 1881.64   |
+    | Mannheim                     | 2004 | 34600     | Mannheim-Sandhofen          | 359.12    |
+    | München-Brunnthal (Taufkirchen) | 2003 | 37700  | Taufkirchen-Ost             | 505.11    |
+    | München-Eching (Eching)      | 1974 | 32300     | Eching                      | 409.45    |
+    | Nürnberg/Fürth (Fürth)       | 1981 | 34600     | Fürth-Poppenreuth           | 455.47    |
+    | Oldenburg                    | 2007 | 37000     | Oldenburg-Hafen             | 1460.18   |
+    | Osnabrück                    | 2005 | 28000     | Hasbergen-Gaste             | 776.75    |
+    | Regensburg                   | 2001 | 24300     | Neutraubling                | 1448.13   |
+    | Rostock                      | 2007 | 28000     | Rostock-Krummendorf         | 5422.73   |
+    | Saarlouis                    | 1981 | 24600     | Saarlouis-Lisdorf           | 677.5     |
+    | Siegen                       | 2005 | 24900     | Siegen                      | 1272.38   |
+    | Sindelfingen                 | 1997 | 34300     | Böblingen/Sindelfingen      | 1029.96   |
+    | Ulm                          | 2003 | 30700     | Ulm-West                    | 5965.51   |
+    | Wallau (Hofheim am Taunus)   | 1977 | 34300     | Wallau                      | 295.52    |
+    | Walldorf                     | 1981 | 25000     | Walldorf/Wiesloch           | 496.97    |
+    | Wetzlar                      | 2017 | 18000     | Aßlar                       | 1528.41   |
+    | Wuppertal                    | 2016 | 25500     | Wuppertal-Oberbarmen        | 468.16    |
+    | Würzburg                     | 2009 | 36000     | Würzburg/Estenfeld          | 3337.58   |
+  </Tabs.Tab>
+</Tabs>
+
+The statistics of the hub distances show that the mean distance to the nearest motorway hub is 1315.85 m.
+The lowest distance is 195.45 m and the highest distance is 7091.62 m.
+50% of the stores are located within a distance of 680.38 m to the nearest motorway hub.
+25% of the stores are located within a distance of 409.45 m to the nearest motorway hub.
+75% of the stores are located within a distance of 1448.13 m to the nearest motorway hub.
+
+The statisticsof the sales area show that the mean sales area of the IKEA stores in Germany is 29,116.67 m².
+The smallest store has a sales area of 18,000 m² and the largest store has a sales area of 43,000 m².
+50% of the stores have a sales area of 28,600 m² or lower.
+25% of the stores have a sales area of 24,900 m² or lower.
+75% of the stores have a sales area of 34,600 m² or lower.
+
+The store with the lowest distance to a motorway hub is the IKEA store in Berlin-Waltersdorf with a distance of 195.45 m.
+The store with the highest distance to a motorway hub is the IKEA store in Berlin-Lichtenberg with a distance of 7091.62 m.
 
 ![IKEA Accessibility Halle/Leipzig](/portfolio/tools/Examples/w3/IKEA_accessibility_analysis.png)
+**Figure 2:** Accessibility (air-line distance to closest motorway hub) of the IKEA store in Halle/Leipzig.
+
+**What does the result mean with regard to the question?**
+The result shows that Germany is covered very good by IKEA stores and that all stores show a good accessibility by motorway hubs.
+The store with the largest distance to a hub is located in the city of Berlin is therefore well accessible even though it is relative far away from a motorway hub.
+
+**To what extent does the analysis allow a realistic judgement?**
+The analysis allows a realistic judgement if the air-line distance correlates to the real distance taken on road to reach an IKEA store from a motorway hub.
+In this a case the the distances should allow an evaluation and make the accessibility of the IKEA stores compareable to the real road network accessibility.
+If there is no relationship between the air-line and road network distances, the numbers from this analysis could be misleading and do not represent a real accessibility measure for the IKEA stores.
 
 ## Week 4
 
 ### Map of the North-Pole region
 
+In this example a ship drift from the Coordinated Eastern Arctic Experiment (CEAREX, 1988-1989) near the North Pole was visualized with an animation. 
+The spatio-temporal data from the R/V POLARBJORN's drift covers September 1988 to May 1989 (NSIDC-0020). 
+The POLARBJORN froze into pack ice north of Svalbard and drifted southeast, then southwest, into the Barents Sea.
+The dataset includes daily position fixes (latitude, longitude, time) for the ship and buoys, available in 24 ASCII files.
+
+For the map a azimuthal projection was used to visualize the North-Pole region.
+Azimuthal projections are ideal for pole regions as these projections, including stereographic, orthographic, and gnomonic, use a plane tangent to the pole.
+The `Temporal Controller` plugin was used to create the animation of the ship drift.
+
 ![Shipdrift Animation](/portfolio/tools/Examples/w4/shipdrift_animation.gif)
+**Figure 3:** Shipdrift animation in the North-Pole region.
+
 
 ### Overview Maps
+This example focuses on creating a custom map using OpenStreetMap (OSM) data within QGIS.
+
+- **Objective**: Create a custom overview map using OSM data with QGIS.
+- **Data Source**: OSM data, specifically for the "National Park Hunsrück-Hochwald" region in Germany.
+- **Tools**: QGIS with plugins like QuickOSM and OSMDownloader.
+
+<Steps>
+{<h3>Importing OSM Data into QGIS</h3>}
+   - Data was downloaded using the OSMDownloader plugin and stored in a GeoPackage (`nphh_osm.gpkg`).
+   - The GeoPackage contains layers for points, lines, multilines, and polygons.
+
+{<h3>Data Exploration</h3>}
+   - Explore the attributes of the `osm_lines` layer, focusing on fields like `highway`, `waterway`, etc.
+   - Use the "Select Feature using an expression" tool to list unique values for fields like `highway`.
+
+{<h3>Visualization</h3>}
+   - Use a categorized renderer to visualize different types of features (e.g., highways).
+   - Apply a pre-defined style using a QML file for more advanced visualization.
+   - Switch to a rule-based renderer for more control and better performance.
+
+{<h3>Rule-Based Styling</h3>}
+   - Create rule-based styles for polygons and lines.
+   - For polygons, focus on the `landuse` field, grouping similar categories (e.g., commercial, industrial, military) and assigning colors.
+   - For lines, create rules for different types of roads (e.g., motorway, trunk) and rivers.
+
+{<h3>Adding a Thematic Layer</h3>}
+   - Add a thematic layer for the "National Park Hunsrück-Hochwald" area from a separate Geopackage (`nphw.gpkg`).
+   - Display the park area with a transparent color overlay on the basemap.
+</Steps>
+
+<span className="text-xl font-bold text-black">Learnings</span>
+- Understand how to handle and visualize OSM data in QGIS.
+- Learn to use categorized and rule-based renderers for effective map visualization.
+- Gain experience in creating custom basemaps and adding thematic layers.
+<br/>
+<span className="text-xl font-bold text-black">Outcome</span>
+- A custom overview map of the "National Park Hunsrück-Hochwald" region (Figure 4), showcasing various land uses, roads, and rivers, with the national park area highlighted.
+<br/>
 
 ![Hunsrück Overview Map](/portfolio/tools/Examples/w4/hunsrueck_overview_map.png)
+**Figure 4:** Custom overview map of the "National Park Hunsrück-Hochwald" region.
 
 ## Week 5
 
-### Qualitative Map of the Pacific region
+### Qualitative Maps of Volcanos in the Pacific Region
 
-<ImgComparisonSlider className="bg-black">
+In this example volcano data in the Pacific region was visualized as a qualitative map, specifically focusing on the "Ring of Fire". 
+
+- **Objective**: To create a map visualizing the "Ring of Fire" volcanoes using QGIS, with a focus on data processing, projection, and visualization techniques.
+- **Data Source**: Volcano data from the Global Volcanism Program (GVP) via a Web Feature Service (WFS) and an Excel file with additional attributes.
+- **Tools**: QGIS with WFS connection, data processing tools, and visualization techniques.
+
+<Steps>
+{<h3>Data Acquisition</h3>}
+   - Load volcano data from the GVP WFS service (`https://webservices.volcano.si.edu/geoserver/GVP-VOTW/wfs?request=GetCapabilities`).
+   - Download additional attributes from the GVP Excel file (`GVP_Volcano_List_Holocene_<date>.xls`).
+
+{<h3>Data Processing</h3>}
+   - Set up a WFS connection in QGIS and load the "Smithsonian_VOTW_Holocene_Volcanoes" layer.
+   - Import the Excel file into QGIS and convert it to a point layer using the "Create points layer from table" tool.
+   - Join the Excel attributes to the WFS layer using the "Volcano Number" as the key field.
+   - Change the project CRS to "WGS 84 / PDC Mercator" to center the map on the Pacific region, making the "Ring of Fire" more visible.
+   - Export the joined layer to a Geopackage file (`volcanoes.gpkg`) to ensure data independence from the WFS service.
+   - Remove duplicates using the "Delete duplicates by attribute" tool if necessary.
+
+{<h3>Visualization</h3>}
+   - Choose a suitable zoom level to center the map on the "Ring of Fire" region.
+   - Add a base map using XYZ-Tiles (e.g., OpenStreetMap or Global Terrain from Mapzen).
+   - Symbolize the volcano points using color-coded triangles or other markers (e.g., SVG markers for more customization).
+
+{<h3>Qualitative Mapping</h3>}
+   - Visualize qualitative attributes of volcanoes, such as type, landform, and evidence of activity.
+   - Use categorized renderers to display different volcano types and merge similar categories to reduce complexity.
+   - Adjust the drawing order of categories to ensure less frequent categories are displayed on top of more frequent ones.
+   - Create a heatmap to visualize the density of volcanoes, adjusting color ramps and point sizes for effective display.
+</Steps>
+
+<span className="text-xl font-bold text-black">Learnings</span>
+- Understand how to connect to and use WFS services in QGIS.
+- Learn to process and join data from different sources (WFS and Excel).
+- Gain experience in selecting and applying appropriate map projections.
+- Explore advanced visualization techniques, including custom SVG markers, clustering, and heatmaps.
+- Develop skills in creating and customizing map layouts and legends in QGIS.
+<br/>
+<span className="text-xl font-bold text-black">Outcome</span>
+- A customized map of the "Ring of Fire" region, highlighting the distribution of volcanoes and their type.
+- A customized map of the "Ring of Fire" region showing the density of volcanoes.
+<br/>
+
+<ImgComparisonSlider className="bg-black m-0">
   <img
     slot="first"
     src="/geovis-portfolio/portfolio/tools/Examples/w5/volcanos_map_ring_of_fire_volcano_type.png"
@@ -42,36 +260,223 @@ The second map visualizes the accessibility of for the IKEA store of Halle/Leipz
     src="/geovis-portfolio/portfolio/tools/Examples/w5/volcanos_map_ring_of_fire_volcano_density.png"
   />
 </ImgComparisonSlider>
+<p>**Figure 5:** Customized maps of the "Ring of Fire" region, showing volcano types (left) and volcano density (right).</p>
 
 ## Week 6
 
-### Quantitative Maps: Road Traffic in North-Rhine Westphalia
+In this example road traffic and vehicle accident data in North Rhine-Westphalia (NRW), Germany was visualized using `QGIS` and exported to an interactive web format.
+
+### Quantitative Maps: Road Traffic in NRW
+
+- **Objective**: Create thematic maps of road traffic data in NRW using QGIS and export the maps to an interactive web format using the `qgis2web` plugin.
+- **Data Source**: Road traffic data from [OpenGeodata.NRW](https://www.opengeodata.nrw.de/produkte/transport_verkehr/strassennetz/), specifically the "Verkehrswerte" (Traffic Counts) Shapefile.
+- **Tools**: QGIS with the `qgis2web` plugin for web export.
+
+<Steps>
+{<h3>Data Preparation</h3>}
+   - Load the traffic data (`VERKEHRSWERTE_line.shp`) into QGIS.
+   - Explore the data attributes, focusing on the "DTVKFZA" field, which represents the mean daily traffic count for all vehicles.
+   - Export the data to a Geopackage (`traffic.gpkg`), keeping only essential fields: `STRBEZ` (road name), `STRNR` (road number), `ABSNR` (section number), `ANZFAHRSTR` (number of lanes), and `DTVKFZA` (mean daily traffic count)
+
+{<h3>Visualization</h3>}
+   - **Graduated Renderer (Option 1)**:
+     - Use the "Graduated" renderer to visualize traffic data by varying line width based on the "DTVKFZA" field.
+     - Adjust the line width range and classification method (e.g., "Equal Interval" or "Natural Breaks") to best represent the data.
+     - Add a base map (e.g., OpenStreetMap, CartoDB Dark Matter, or ESRI (Dark)) for context.
+   - **Data Defined Override (Option 2)**:
+     - Use the "Data Defined Override" option to create a proportional line width based on the "DTVKFZA" field.
+     - Apply an expression to calculate line width: `"DTVKFZA" / maximum("DTVKFZA") * 4`.
+     - This method does not generate a legend automatically, so additional steps are needed if a legend is required.
+
+{<h3>Web Export with `qgis2web`</h3>}
+   - Prepare the project for web export:
+     - Set a project title in QGIS under Project > Properties > Metadata.
+     - Configure layer properties for web export, including attribution and pop-up behavior.
+     - Customize attribute aliases and hide unnecessary fields in the pop-up window.
+   - Use the `qgis2web` plugin to export the map to an interactive web format (OpenLayers or Leaflet).
+   - Adjust settings in the plugin dialog, such as layer visibility, pop-up behavior, and output directory -> Export the map.
+</ Steps>
 
 <iframe
   src="/geovis-portfolio/portfolio/tools/Examples/w6/nrw_traffic_web_map/index.html"
   width="100%"
   height="500"
 />
+<p>**Figure 5:** Interactive web map of road traffic in NRW, visualizing mean daily traffic counts using graduated or proportional line widths.</p>
 
-### Quantitative Maps: Choropleth map of vehicle accidents in North-Rhine-Westfalia (NRW)
+### Quantitative Maps: Choropleth map of vehicle accidents in NRW
+
+- **Objective**: Create a choropleth map visualizing vehicle accidents in NRW, normalized by area and the number of registered vehicles, and export the maps to an interactive web format.
+- **Data Sources**: Accident data: Shapefile with point data (`UNFAELLE_point.shp`), municipal boundaries (`geb01_f.shp`) from ATKIS, and vehicle registration data (`kfz_01-01-2020-46251-01iz.csv`) from the State Office of Statistics.
+- **Tools**: QGIS and the `qgis2web` plugin for web export.
+
+<Steps>
+{<h3>Data Preparation</h3>}
+**Vehicle Data**
+     - Clean and format the CSV and create a `.csvt` file to specify data types for each column.
+     - Import the CSV file into QGIS as a table.
+
+**Municipal Boundaries**:
+     - Load the municipal boundaries Shapefile (`geb01_f.shp`) and filter for NRW using an expression: `"BEZ_LAN" = 'Nordrhein-Westfalen' AND "OBJART" = '75003'`.
+     - Create a new field (`SCH_8`) to match the key field in the vehicle data for joining.
+
+**Join Vehicle Data to Municipal Boundaries**:
+     - Join the vehicle data table to the municipal boundaries layer using the newly created `SCH_8` field.
+
+**Accident Data**:
+     - Load the accident point data (`UNFAELLE_point.shp`) into QGIS.
+     - Aggregate accident points by municipal boundaries using the "Count points in polygon" tool, creating a new field (`Accidents`) to store the count of accidents per municipality.
+
+{<h3>Visualization</h3>}
+**Diagrams for Accidents (Static Map)**:
+  - Use diagrams (e.g., pie charts or circles) to visualize the number of accidents per municipality.
+  - Adjust the size, opacity, and legend entries for the diagrams to improve readability.
+
+**Choropleths (Interactive Web Maps)**:
+  - Create choropleth maps using the "Graduated" renderer for the `Accidents` field.
+  - Normalize the accident data by:
+    - **Area**: Calculate accidents per square kilometer using the expression: `"Accidents" / $area * 1000000`.
+    - **Number of Vehicles**: Calculate accidents per 1,000 vehicles using the expression: `"Accidents" / "vehicles_kfz" * 1000`.
+  - Compare the choropleth maps to understand the impact of normalization on spatial patterns.
+
+{<h3>Web Export with `qgis2web`</h3>}
+   - Prepare the choropleth map for web export by saving the normalized values (e.g., accidents per 1,000 vehicles) into a new field in the attribute table.
+   - Use the `qgis2web` plugin to export the map to an interactive web format (OpenLayers or Leaflet).
+   - Configure the web map settings, including layer visibility, pop-ups, and base maps.
+   - Export the map and test the generated web application by opening the `index.html` file in a browser.
+</Steps>
 
 <iframe
   src="/geovis-portfolio/portfolio/tools/Examples/w6/nrw_accidents_web_map/index.html"
   width="100%"
   height="500"
 />
+<p>**Figure 6:** Interactive web map of vehicle accidents in NRW, normalized by area and the number of registered vehicles.</p>
 
 ![Vehicle Accidents in NRW](/portfolio/tools/Examples/w6/vehicle_accidents_nrw.png)
+**Figure 7:** Static diagram map showing the number of accidents per municipality in NRW.
+<br/>
+<span className="text-xl font-bold text-black">Learnings</span>
+- Understand how to process and visualize quantitative traffic data in QGIS
+- Learn to use graduated and data-defined override renderers for thematic mapping.
+- Learn to normalize data by area and other relevant attributes (e.g., number of vehicles) for better spatial analysis.
+- Gain experience in creating diagrams and choropleth maps for thematic mapping.
+- Develop skills in exporting QGIS maps to interactive web formats using the `qgis2web` plugin.
+<br/>
+<span className="text-xl font-bold text-black">Outcome</span>
+- A interactive thematic web map of road traffic in NRW, visualizing mean daily traffic counts using graduated or proportional line widths.
+- A series of choropleth maps showing number of vehicle accidents in NRW, normalized by area and the number of registered vehicles.
+- A static diagram map showing the number of accidents per municipality in NRW.
+
 
 ## Week 7
 
 ### Create and visualize a DEM
+
+In this example a Digital Elevation Model (DEM) of Trier and some derivatives were visualized using QGIS.
+
+- **Objective**: To create and visualize a Digital Elevation Model (DEM) and some derivatices using QGIS, with a focus on data visualization techniques.
+- **Data Source**: DEM tile `DGM25_3305510.xyz` from LVermGeo, a 25m regular point grid in EPSG:25832, covering parts of Trier.
+- **Tools**: QGIS with data processing, interpolation, and visualization tools.
+
+<Steps>
+{<h3>Data Import</h3>}
+   - Import the DEM tile (`DGM25_3305510.xyz`) into QGIS using the Data Source Manager.
+   - The data is in ASCII format with X, Y, and Z coordinates separated by blanks.
+   - Create 3D points from the XYZ data, using the X, Y, and Z coordinates.
+
+{<h3>Visualization of Bare Points</h3>}
+   - Visualize the elevation values by applying graduated coloring to the points.
+   - Apply a graduated renderer to the Z-coordinate field (`field_3`) using "Equal Interval" classification.
+   - Observe the Ruwer valley flowing into the Mosel river in the visualization.
+
+{<h3>Interpolation into a Raster DEM</h3>}
+   - Use the TIN interpolation tool in the Processing Toolbox to interpolate the points into a raster DEM.
+   - Set the pixel size to 25 meters and specify the extent based on the input layer.
+   - Save the resulting raster as a GeoTIFF file for permanent storage.
+
+{<h3>Visualization with Color Ramps</h3>}
+   - Explore and customize color ramps using the QGIS Style Manager.
+   - Create a custom color ramp using HTML notation (e.g., `#e9e2b2`, `#a3e478`, `#009300`).
+   - Apply the custom color ramp to the DEM layer using the "Singleband pseudocolor" renderer.
+
+{<h3>Hillshading</h3>}
+   - Duplicate the DEM layer and apply a hillshade style to the copy.
+   - Adjust the resampling method to "Bilinear" for better visualization.
+   - Use layer blending modes (e.g., "Multiply") to combine the color-ramped DEM with the hillshade layer for enhanced visualization.
+
+{<h3>DEM Derivatives</h3>}
+   - Generate contour lines using the GRASS tool `r.contour`.
+   - Calculate slope and aspect maps from the DEM using QGIS tools.
+   - Visualize slope and aspect maps with appropriate color ramps from the Style Manager.
+</Steps>
+
+<span className="text-xl font-bold text-black">Learnings</span>
+- Understand how to import and process DEM data in QGIS.
+- Learn to interpolate point data into a raster DEM using TIN interpolation.
+- Gain experience in customizing color ramps and applying hillshading for enhanced DEM visualization.
+- Develop skills in generating and visualizing DEM derivatives such as contour lines, slope, and aspect maps.
+<br/>
+<span className="text-xl font-bold text-black">Outcome</span>
+- A detailed DEM of the Trier region, visualized with custom color ramps and hillshading.
+- Contour lines, slope, and aspect maps derived from the DEM, visualized with custom color ramps and hillshading.
+
 ![DEM Visualizations](/portfolio/tools/Examples/w7/dem_contours_aspect_slope.png)
+**Figure 8:** Visualizations of the DEM and its derivatives (contour lines, aspect, and slope maps) for the Trier region. All visualizations are underlain by the hillshade layer for enhanced 3D perception.
 
 ### Create 3D-Buildings
+
+In this example 3D buildings in Trier, Germany were created and visualized, using QGIS:
+
+- **Objective**: To create and visualize 3D buildings in Trier, Germany, using QGIS, with a focus on data processing, height calculation, and 3D visualization.
+- **Data Sources**:
+  - Building footprints: `210827_trier_buildings.gpkg` from OpenStreetMap.
+  - Building height data: `building_height.tif`, a 10m resolution DSM (Digital Surface Model) generated by a project at HU Berlin.
+- **Tools**: QGIS with data processing, zonal statistics, and 3D visualization tools.
+- **Own contribution**: Interactive 3D web map of Trier's buildings instead of Map Layout.
+
+<Steps>
+{<h3>Data Preparation</h3>}
+   - **Fix Geometries**:
+     - Use the "Fix Geometry" tool in QGIS to correct any errors in the OpenStreetMap building footprints.
+     - Save the corrected building data to a new Geopackage, keeping only essential attributes (e.g., `id`, `building`, `addr:city`, `addr:housenumber`).
+   - **Reproject Data**:
+     - Reproject the building data to EPSG:3035 (ETRS89-extended / LAEA Europe) to match the coordinate system of the building height raster.
+
+{<h3>Height Calculation</h3>}
+   - **Zonal Statistics**:
+     - Use the "Zonal Statistics" tool to calculate building heights based on the `building_height.tif` raster.
+     - Calculate statistics (e.g., count, mean, median) for the raster pixels within each building footprint.
+   - **Height Conversion**:
+     - Convert the median height values from decimeters to meters using a field calculation expression: `if("_median" is not Null, "_median" / 10, 6)`.
+     - Assign a default height of 6 meters to buildings without height values.
+
+{<h3>Visualization</h3>}
+   - **2D Visualization (not shown in the portfolio)**:
+     - Visualize the building heights using a graduated color ramp (e.g., yellow to dark red) in 2D.
+     - Create a map layout for inclusion in a portfolio (not performed here)
+   - **3D Visualization (3D Viewer)**:
+     - Prepare the building layer for 3D visualization by setting the extrusion height using the `building_height` field.
+     - Create a new 3D map view in QGIS and adjust the 3D styling options.
+  - **Export to Web**:
+     - Export a 3D map to an interactive web format using the QGIS2three.js plugin.
+
+</Steps>
+
+<span className="text-xl font-bold text-black">Learnings</span>
+- Understand how to fix geometries and process building footprint data from OpenStreetMap.
+- Learn to calculate building heights using zonal statistics and raster data (DSM).
+- Gain experience in visualizing building heights in both 2D and 3D using QGIS.
+- Develop skills in creating map layouts and 3D visualizations for spatial data.
+<br/>
+<span className="text-xl font-bold text-black">Outcome</span>
+- A 2D map of Trier's buildings, color-coded by height. (not shown in the portfolio)
+- A 3D web map of Trier's buildings, extruded based on calculated heights.
+<br/>
 
 <iframe
   src="/geovis-portfolio/portfolio/tools/Examples/w7/3D_web_map_trier/index.html"
   width="100%"
   height="500"
 />
+<p>**Figure 9:** Interactive 3D web map of Trier's buildings, extruded based on calculated heights.</p>
