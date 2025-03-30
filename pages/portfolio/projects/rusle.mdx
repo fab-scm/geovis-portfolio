@@ -27,21 +27,66 @@ export const images = [
 
 # RUSLE (Western Kenya)
 
+Soil erosion is a critical environmental challenge, threatening agricultural productivity, water quality, and ecosystem stability. 
+Understanding its spatial patterns and drivers is essential for sustainable land management. 
+This project presents a comprehensive geospatial assessment of soil erosion risk in western Kenya using the **Revised Universal Soil Loss Equation (RUSLE)**, 
+integrating remote sensing, GIS, and statistical modeling to quantify and visualize erosion factors at a landscape scale.  
+
+#### **Scope and Objectives**  
+This project has systematically addressed each component of RUSLE—**Rainfall Erosivity (R)**, **Soil Erodibility (K)**, **Slope Length and Steepness (LS)**, **Crop Management (C)**, except **Protection Practices (P)**—to map erosion hotspots and identify vulnerable areas. Key objectives included:  
+1. **Data Integration**: Leveraging global datasets (MODIS NDVI, SoilGrids, ESDAC rainfall) with localized adjustments.  
+2. **Methodological Rigor**: Adapting formulas (e.g., USPED for LS, empirical regressions for C) to raster-based GIS workflows.  
+3. **Visual Storytelling**: Employing dynamic maps, 3D views, and interactive tools to reveal spatial and temporal trends.  
+
 ## Introduction and Overview
+
+In this first part of the project we focus on creating and analyzing an overview and a land-use map of the study area.
+The analysisi was initially done in ArcGIS Pro and then redone with R using several packages like `sf`, `terra`, `tmap` for spatial data analysis and visualization.
 
 ### Map of the Study Area
 
+<Steps >
+- **Base map:** The base map consits of a **shaded relief** layer for terrain visualization (derived from DEM).
+- **DEM:** This layer provides elevation data.
+- **Add Geographic Information Layers:** Towns and villages, Rivers, Reservoirs, Waterbodies
+</Steps>
+
 ![Map of the Study Area](/portfolio/projects/rusle/study-area.png)
+**Figure 1:** Map of the study area in western Kenya, showing the DEM and other geographic information layers.
 
 ### Map of Land-Use
 
+<Steps>
+- Insert `ken_gc_adg.lyr` which contains the land-use classification of the study area
+- The layer uses predefined colors representing 52 land use categories (following standard FAO/UNEP Land Cover Classification System - LCCS).
+- Create a map layout and export the result
+- Create a legend and minimize it by merging similar land use classes
+</Steps>
+
 ![Map of the Land-Use of the Study Area](/portfolio/projects/rusle/land-use.png)
+**Figure 2:** Map of the land-use of the study area in western Kenya.
 
 ### 3D Views of the Study Area
+
+<Steps>
+**1. Base Map:**
+   - Use a shaded relief base map.
+   - Use the "aster_dem" layer and apply the "Aspect-Slope" raster function to visualize terrain features with color variations.
+
+**2. Create a 3D View in ArcGIS Pro:**
+   - Insert a new "Local Scene" and paste the copied layers.
+   - Organize layers so that "towns and villages" are 3D layers while others remain 2D.
+   - Adjust vertical exaggeration and clip layers for better visualization.
+
+**3. Share the 3D Scene via ArcGIS Portal:**
+   - Use "Share As Web-Scene" to publish it.
+   - Address any errors that appear during analysis.
+</Steps>
 
 #### Static 3D View of the Study Area
 
 ![3D View of the Study Area](/portfolio/projects/rusle/3D-view.png)
+**Figure 3:** Static 3D view of the study area in western Kenya, showing the DEM and other geographic information layers.
 
 #### Interactive 3D View of the Study Area
 
@@ -52,9 +97,18 @@ export const images = [
   allowFullScreen={true}
   src="https://arcg.is/0zj9LC0"
 ></iframe>
+<p>**Figure 4:** Interactive 3D view of the study area in western Kenya, showing the DEM and other geographic information layers.</p>
 
 ## RUSLE Model
-
+<br/>
+<span className="text-xl font-bold ">Prepare the Depressionless DEM</span>
+- Load the `dem_tile_N` and `dem_tile_S`
+- Mosaic the two DEM tiles to create a single DEM (`dem_mosaic`).
+- Mask the water bodies using the waterbodies layer.
+- Resample the DEM to 250m resolution and crop it to the AOI.
+- Fill the DEM to remove sinks and depressions.  
+- Final DEM: Depressionless DEM (`dem_filled`).
+<br/>
 <ImageGallery
   items={images}
   showThumbnails={false}
@@ -64,30 +118,213 @@ export const images = [
   showBullets={true}
   slideDuration={0}
 />
+<p>**Figure 5-9:** Workflow visualization of the DEM preparation process.</p>
+
 
 <Steps>
 
-### Calculate the LS Factor
+### Calculate the LS-Factor
+
+**L-Factor: Slope Length**
+
+**S-Factor: Slope Steepness**
+
+---
+
+<span className="text-xl font-bold ">L-Factor (Slope-Length)</span>
+<br/>
+The slope length factor at some point on the landscape.
+
+**Flow Direction:** <br/>
+   `dem_filled → Flow Direction → ls_flow`.  
 
 ![Flow Direction](/portfolio/projects/rusle/ls_fac/ls_flow.png)
+**Figure 10:** Flow Direction
+
+**Flow Accumulation (Uphilll Area):** <br/>
+   `ls_flow → Flow Accumulation → ls_uparea`.  
 
 ![Flow Accumulation](/portfolio/projects/rusle/ls_fac/ls_uparea.png)
+**Figure 11:** Flow Accumulation
 
+The L-Factor is calculated as:  
+```math
+L = (m + 1) \times \left( \frac{\lambda_A}{22.1} \right)^m
+```
+Where:  
+- $\lambda_A$ = Area of upland flow (from `ls_uparea`).  
+- $m$ = empirical constant (default: 0.4).  
+- 22.1: the "unit plot length".
+
+**R Expression:**  
+```r
+ls_l <- ((ls_uparea*250/22.1)^(0.4)) * (0.4+1)
+```
+
+---
+
+<span className="text-xl font-bold ">S-Factor (Slope Steepness)</span>
+<br/>
+
+S: The slope factor at some point on the landscape.
+
+Compute slope in degrees from `dem_filled`:  
+`dem_filled → Slope → ls_slope`.  
+
+The S-Factor is calculated as:  
+```math
+S = \left( \frac{\sin(\beta_A)}{0.09} \right)^n
+```
+Where:  
+- $\beta_A$ = slope angle (degrees, converted to radians).  
+- $n$ = empirical constant (default: 1.4).  
+- 0.09: a constant
+
+**Raster Calculator Expression:**  
+```r
+ls_s <- ((sin(ls_slope*0.01745))/0.09)^(1.4)
+```
 ![Slope](/portfolio/projects/rusle/ls_fac/ls_slope.png)
+**Figure 12:** Slope
 
+---
+
+<span className="text-xl font-bold ">Combine L and S to Compute LS-Factor (Multiply)</span>
+```math
+\text{LS} = L \times S
+```
+
+**R Expression:**  
+```r
+ls_fac <- ls_l * ls_s
+```
 ![LS-Factor](/portfolio/projects/rusle/ls_fac/ls_fac.png)
+**Figure 13:** LS-Factor
+
 
 ![LS-Factor Composite](/portfolio/projects/rusle/ls_fac/ls_composite.png)
+**Figure 14:** LS-Factor Composite
 
-### Calculate the C Factor
+### Calculate the C-Factor
+
+**C-Factor: Cover-Management**
+
+---
+
+<br/>
+<span className="text-xl font-bold ">Calculate Long-Term Mean NDVI</span>
+
+Compute the mean NDVI across all time steps and scale to `[-1, 1]`:
+```math
+\text{NDVI}_{\text{mean}} = \frac{\sum_{i=1}^{n} \text{NDVI}_i}{n} \times 0.0001
+```
+Where:
+- $n$ = number of NDVI rasters.
+
+**R Expression**:  
+```r
+ndvi_mean <- sum(ndvi_stack)/nlyr(ndvi_stack) * 0.0001
+```
 
 ![Mean NDVI for C-Factor](/portfolio/projects/rusle/c_fac/c_ndvi.png)
+**Figure 15:** Mean NDVI from MODIS NDVI time series.
+
+---
+
+<br/>
+<span className="text-xl font-bold ">Convert NDVI to C-Factor</span>
+<br/>
+Use the exponential regression formula from van der Knijff et al. (1999):
+
+```math
+C = \exp(- \alpha \times \left( \frac{\text{NDVI}_{\text{mean}}}{\beta - \text{NDVI}_{\text{mean}}} \right) )
+```
+Where:
+- $\alpha = 2.0$.
+- $\beta = 1.0$.
+
+**R Expression**:  
+```r
+c_fac <- exp(-2.0 * (ndvi_mean/(1.0 - ndvi_mean)))
+```
 
 ![C-Factor](/portfolio/projects/rusle/c_fac/c_fac.png)
+**Figure 16:** C-Factor from NDVI time series.
 
-### Calculate the K Factor
+---
+
+<br/>
+<span className="text-xl font-bold ">Analysis & Visualization</span>
+<br/>
+- **Value Range**:  
+  - \(C \approx 0\): High vegetation protection (minimal erosion).  
+  - \(C \approx 1\): Bare soil (maximal erosion).  
+- **Classification**: Use manual intervals (e.g., `0–0.2`, `0.2–0.4`, etc.) with a color ramp (green → red).  
+- **Advanced Methods**:  
+  - **Composite Bands**: Combine `C` and `LS` factors for joint analysis (RGB blending).  
+  - **3D View**: Overlay `C` on terrain (e.g., in QGIS or ArcGIS Pro).  
+
+
+### Calculate the K-Factor
+
+**K-Factor: Soil Erodibility**
+
+---
+
+<span className="text-xl font-bold ">Data Sources</span>
+<br/>
+- **ISRIC SoilGrids** (https://www.isric.org/explore/soilgrids):  
+  - Parameters: Sand (`sand`), Silt (`silt`), Clay (`clay`), Organic Carbon (`organic`).  
+  - Horizons: 0–5cm (`sd1`), 5–15cm (`sd2`), 15–30cm (`sd3`).  
+
+---
+
+<span className="text-xl font-bold ">Compute Textural Factor $M$ (two methods)</span>
+<br/>  
+  - **Without Very Fine Sand**:  
+    ```math
+    M_{\text{sand}} = (\text{Silt} + \text{Sand}) \times (100 - \text{Clay})
+    ``` 
+    ```r
+    M_sand <- (soil_stack$silt + soil_stack$sand) * (100 - soil_stack$clay)
+    ```
+  - **With Very Fine Sand**:  
+    ```math
+    M_{\text{vfs}} = (\text{Silt} + \text{Sand}/5) \times (100 - \text{Clay})
+    ```  
+    ```r
+    M_vfs <- (soil_stack$silt + soil_stack$sand/5) * (100 - soil_stack$clay)
+    ```
+
+---
+
+<span className="text-xl font-bold ">K-Factor Calculation</span>
+<br/>  
+  - **Without Very Fine Sand**:  
+    ```math
+    K_{\text{sand}} = \left(0.00021 \times M_{\text{sand}}^{1.14} \times (12 - \text{OrgM}) + 2.875\right) \times 0.001317
+    ```
+    ```r
+    k_fac_sand = ((0.00021*(M_sand**1.14)) * (12 - soil_stack$organic) + 2.875)* 0.001317
+    ```
+  - **With Very Fine Sand**:  
+    ```math
+    K_{\text{vfs}} = \left(0.00021 \times M_{\text{vfs}}^{1.14} \times (12 - \text{OrgM}) + 2.875\right) \times 0.001317
+    ```  
+    ```r
+    k_fac_vfs = ((0.00021*(M_vfs**1.14)) * (12 - soil_stack$organic) + 2.875)* 0.001317
+    ```
+   *Negative values* occur where OM > 12% (e.g., Mt. Elgon’s histosols).  
+
+---
+
+**Visualization**:  
+- Classify values (0–0.4) with a color ramp (blue = low erodibility, red = high).  
+- Compare `M_sand` vs. `M_vfs` results.  
 
 ![Soil Stack](/portfolio/projects/rusle/k_fac/k_soil_stack.png)
+**Figure 17:** Soil stack with sand, silt, clay, and organic matter.
+<br/>
 
 <ImgComparisonSlider className="bg-black">
   <img
@@ -99,9 +336,30 @@ export const images = [
     src="/geovis-portfolio/portfolio/projects/rusle/k_fac/k_fac_vfs.png"
   />
 </ImgComparisonSlider>
+<p>**Figure 18:** K-Factor with and without very fine sand.</p>
 
-### Calculate the R Factor
+### Calculate the R-Factor
 
+**R-Factor: Rainfall Erosivity**
+
+---  
+
+<span className="text-xl font-bold ">Data Sources</span>
+<br/>  
+- **Global Rainfall Erosivity (ESDAC, 2017)**: Preprocessed raster (`R` values in MJ·mm·ha<sup>-1</sup>·h<sup>-1</sup>·yr<sup>-1</sup>).  
+
+---
+
+<span className="text-xl font-bold ">Processing</span>
+<br/>  
+1. Clip to study area (Kenya) using Lambert Azimuthal Equal Area projection.  
+2. Resample to 250m resolution to match other factors.  
+
+---
+
+<span className="text-xl font-bold ">Visualization</span>
+<br/>
+<br/>
 <ImgComparisonSlider className="bg-black">
   <img
     slot="first"
@@ -112,8 +370,29 @@ export const images = [
     src="/geovis-portfolio/portfolio/projects/rusle/r_fac/r_fac_stretch.png"
   />
 </ImgComparisonSlider>
+<p>**Figure 19:** R-Factor with intervals and stretch.</p>
 
 ### RUSLE Result
+
+<br/>
+<span className="text-xl font-bold ">Formula</span>
+<br/>   
+```math
+A = LS \times C \times K \times R \times P
+```
+Where: 
+- *Assumptions*: \(P = 1\) (no protection measures).  
+
+---
+
+**R Expression:**
+```r
+rusle <- ls_fac * c_fac * k_fac_vfs * r_fac
+``` 
+
+- **Visualization**:  
+  - Green-to-red color ramp (low-to-high erosion).  
+  - Use **Swipe Tool** to compare factors interval and stretched visualization.  
 
 <ImgComparisonSlider className="bg-black">
   <img
@@ -125,5 +404,38 @@ export const images = [
     src="/geovis-portfolio/portfolio/projects/rusle/rusle_stretch.png"
   />
 </ImgComparisonSlider>
+<p>**Figure 20:** RUSLE result with intervals and stretch.</p>
 
 </Steps>
+
+
+
+## **Analysis**  
+The RUSLE (Revised Universal Soil Loss Equation) model was applied to estimate annual soil loss in western Kenya, integrating five key factors: rainfall erosivity (**R**), soil erodibility (**K**), slope length and steepness (**LS**), crop management (**C**), and conservation practices (**P**). Here’s a synthesis of the findings:  
+
+1. **Spatial Patterns of Erosion Risk**:
+   - The **LS-factor** revealed high erosion susceptibility in steep terrains (e.g., mountainous areas), where long slopes and pronounced gradients accelerate water flow and sediment transport.  
+   - The **C-factor** highlighted seasonal dynamics, with lower erosion protection (higher *C* values) in dry seasons due to reduced vegetation cover. Agricultural lands showed variable protection depending on crop cycles.  
+   - The **K-factor** identified silt-rich soils as most vulnerable, while clayey and organic-rich soils (e.g., Mt. Elgon’s histosols) resisted detachment despite high organic matter causing negative *K* values.  
+   - The **R-factor** emphasized the role of intense rainfall, with higher erosivity in regions experiencing extreme precipitation events.  
+
+2. **Data and Methodological Insights**:
+   - **MODIS NDVI** proved effective for deriving the **C-factor**, though its 250m resolution smoothed fine-scale variability.  
+   - **SoilGrids data** enabled scalable **K-factor** calculations, but assumptions (e.g., 20% very fine sand) introduced uncertainty. Negative *K* values in organic-rich soils suggested formula limitations.  
+   - **LS-calculation** via USPED (uphill area) aligned with EU benchmarks, though coarser resolution (250m vs. 30m) reduced detail.  
+
+3. **Integration Challenges**:
+   - Discrepancies in raster resolutions (e.g., **R-factor** at native scale vs. resampled 250m) required careful handling to avoid misalignment.  
+   - Extreme values in the final **RUSLE output** (e.g., >10,000 t/(ha·yr)) were rare but concentrated in high-slope, low-vegetation areas, underscoring the need for localized conservation.  
+
+## **Conclusion**
+The RUSLE model successfully identified erosion hotspots in western Kenya, linking physical terrain properties (**LS**, **K**) with dynamic vegetation (**C**) and climatic forces (**R**). Key takeaways include:  
+- **High-Risk Areas**: Steep slopes with sparse vegetation and silt-dominated soils require prioritized intervention (e.g., terracing, afforestation).  
+- **Limitations**: Empirical formulas (e.g., **K-factor**) may need calibration for local conditions, particularly organic soils. Seasonal **C-factor** variability calls for multi-temporal analysis.  
+- **Recommendations**:  
+  - Refine **K-factor** calculations with field data (e.g., measured very fine sand fractions).  
+  - Incorporate higher-resolution rainfall data to improve **R-factor** precision.  
+  - Use interactive 3D visualizations (e.g., QGIS) to communicate risk to stakeholders.  
+
+This assessment underscores the value of RUSLE as a scalable tool for erosion planning, while highlighting the importance of contextual adaptations for robust results.
+Future work could integrate machine learning to refine factor weights or explore real-time NDVI feeds for dynamic **C-factor** updates.  

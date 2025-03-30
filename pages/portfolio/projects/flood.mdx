@@ -1,12 +1,37 @@
 import Script from "next/script";
+import { Steps } from "nextra/components";
 
 # Flood Project (Trier, RLP)
 
+This project analyzes flood risk along the Moselle River in Trier, Germany, using geospatial modeling in **ArcGIS Pro**.
+The workflow combines **3D building data**, **DEM-based water level simulations**, and **historical flood records**.
+
+<Steps>
+{<h3>Prepare Data</h3>}
+Processes OSM building footprints with height attributes and DEM-derived terrain models.
+
+{<h3>Model Flood Scenarios</h3>}
+Uses Python geoprocessing tools to simulate water levels (3m–12m) and identify at-risk buildings.
+
+{<h3>Visualize Risk</h3>}
+Create static maps and web-ready animations to communicate flood exposure, categorized by severity (high/medium/low risk).
+</Steps>
+The complete workflow represents an end-to-end geovisualization pipeline, progressing from 2D analysis to 3D presentation:
+<br/>
+<span className="text-xl font-bold ">Outcome:</span>
+Static maps, interactive web maps, time-enabled flood animations, and risk classification for emergency preparedness.
+
+
 ## Introduction and Overview
+
+The project begins with gathering essential base data, including a 10-meter resolution digital elevation model (DEM) and building footprint data containing attributes such as building height. These datasets are organized in ArcGIS Pro using the ETRS 1989 UTM Zone 32N coordinate system.
+
+To assess the vulnerability of buildings to flooding, a classification system is developed based on the building height. Each building is assigned a risk class on a scale from 1 to 5 (yellow to red), which basically shows the buildings height.
 
 ### Static Overview Map
 
 ![Moselle by Trier](/portfolio/projects/flood/Moselle-by-Trier.png)
+**Figure 1:** Static map of the Moselle River in Trier, Germany.
 
 ### Dynamic Overview Web Map
 
@@ -17,12 +42,20 @@ import Script from "next/script";
 ></Script>
 
 <arcgis-embedded-map style={{height:600 + 'px'}} item-id="c3199b9d42e74da8b1eca5acd2b56277" theme="light" legend-enabled information-enabled share-enabled portal-url="https://zimk-uni-trier.maps.arcgis.com" ></arcgis-embedded-map>
+<p>**Figure 2:** Dynamic web map of the Moselle River in Trier, Germany.</p>
 
 ## Flood Risk map
+
+The second phase automates the extraction of flood heights at regular intervals to create a series of raster layers representing progressive flood levels.
+
+Python tools are implemented in ArcGIS Pro, including "Extract Heights" for generating flood extent rasters and "Make Flood Contours" for creating contour lines.
+The flood height extraction process uses the DEM as input, covering flood levels at 3m, 6m, 9m, and 12m, resulting in 4 raster layers.
+The results are visualized by overlaying the DEM, flood polygons, and color-coded risk classifications for buildings.
 
 ### Static Risk Map
 
 ![Moselle Flood Levels](/portfolio/projects/flood/Moselle-Flood-Levels.png)
+**Figure 3:** Static map of the flood risk along the Moselle River in Trier, Germany.
 
 ### Dynamic Risk Web Map
 
@@ -33,11 +66,23 @@ import Script from "next/script";
 ></Script>
 
 <arcgis-embedded-map style={{height:600 + 'px'}} item-id="d7efd99e536f42278feefd376941bca6" theme="light" legend-enabled information-enabled share-enabled portal-url="https://zimk-uni-trier.maps.arcgis.com" zoom-level={12}></arcgis-embedded-map>
+<p>**Figure 4:** Dynamic web map of the flood risk along the Moselle River in Trier, Germany.</p>
 
 ## Flood Animation
 
+The extracted flood data is used to create a time-enabled visualization of flood progression as a 2D and 3D animation.
+
 ### 2D Animation
 
+A mosaic dataset is created to combine all flood rasters and assign temporal attributes.
+The time progression is set with a fictional starting date, where each flood level represents a six-hour increment.
+The time properties are configured in ArcGIS Pro to enable dynamic filtering.
+
+To create an animation, a new map is set up, including the risk-classified buildings, the flood mosaic dataset, and the base DEM. 
+An animation timeline is initialized, and time slider steps are imported to create keyframes. 
+Camera movements are planned to highlight different areas at different flooding stages, including an initial overview, key flood zones, and a final overview.
+A dynamic time overlay is added, and the animation is exported as an MPEG4 video with a resolution of 800×600 pixels, a frame rate of 24 fps, and a duration of 30 seconds.
+<br/>
 <video width="100%" height="240" controls preload="metadata" loop>
   <source
     src="/geovis-portfolio/portfolio/projects/flood/2D-flood-animation.mp4"
@@ -45,9 +90,23 @@ import Script from "next/script";
   />
   Your browser does not support the video tag.
 </video>
+<p>**Animation 1:** 2D flood animation along the Moselle River in Trier, Germany.</p>
 
 ### 3D Animation
 
+The final phase transitions the flood data into a 3D environment to enhance spatial understanding of flood impacts.
+
+A new local scene is created in ArcGIS Pro, incorporating the buildings and flood layers. 
+The building footprints are converted into 3D models using extrusion based on height attributes.
+A definition query is applied to display only flooded buildings, and symbology is adjusted to improve visualization.
+
+The flood layers maintain their time properties from the 2D scene, with a six-hour time span between flood levels.
+The terrain is enhanced by applying vertical exaggeration to emphasize elevation differences.
+
+A 3D animation is created by importing the time slider steps from the flood mosaic dataset and setting a 30-second duration.
+Key camera positions are defined to guide viewers through different perspectives, ensuring smooth transitions.
+Additional enhancements, such as lighting effects, transparency adjustments, and time overlays, are applied before exporting the final 3D animation in MPEG4 format.
+<br/>
 <video width="100%" height="240" controls preload="metadata" loop>
   <source
     src="/geovis-portfolio/portfolio/projects/flood/3D-flood-animation.mp4"
@@ -55,3 +114,9 @@ import Script from "next/script";
   />
   Your browser does not support the video tag.
 </video>
+<p>**Animation 2:** 3D flood animation along the Moselle River in Trier, Germany.</p>
+
+## Conclusion
+This project demonstrates an advanced approach to flood risk visualization, integrating spatial analysis, temporal modeling, and multidimensional visualization.
+The final animations provide an intuitive understanding of flood extent, progression, and impact on urban infrastructure.
+These tools are valuable for flood preparedness, mitigation planning, and emergency response, ensuring that decision-makers have clear and effective visual representations of flood risks in Trier.
